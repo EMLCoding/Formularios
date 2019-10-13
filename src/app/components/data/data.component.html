@@ -1,1 +1,96 @@
-<p>data works!</p>
+<h4>Formularios <small>Data</small></h4>
+<hr>
+<!-- Este formulario enviara los datos al "form" del Typescript -->
+<form [formGroup]="forma" (ngSubmit)="guardarCambios()" novalidate="novalidate">
+
+    <div formGroupName="nombrecompleto">
+        <div class="form-group row">
+            <label class=" col-2 col-form-label ">Nombre</label>
+            <div class="col-8 ">
+                <!-- Con el formControlName se relaciona este input con la variable nombre del objeto "form " del TS -->
+                <input class="form-control" type="text" placeholder="Nombre" formControlName="nombre">
+
+                <!-- LOS NGIF DAN ERROR PERO NO SE POR QUE -->
+                <!-- <div *ngIf="forma.get('nombrecompleto.nombre').errors?.required" class="form-control-feedback">
+                    El nombre es necesario
+                </div> -->
+                <!-- <div *ngIf="forma.controls[ 'nombre'].errors?.minlength" class="form-control-feedback">
+                    Por lo menos 3 caracteres
+                </div> -->
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label">Apellido</label>
+            <div class="col-8 ">
+
+                <input class="form-control" type="text" placeholder="Apellido" formControlName="apellidos">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Correo</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="correo">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Username</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="text" placeholder="Usuario" formControlName="username">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Password</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="password" placeholder="Contraseña" formControlName="password1">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Repetir Password</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="password" placeholder="Repetir Contraseña" formControlName="password2">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Correo</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="correo">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Pasatiempos</label>
+        <!-- Para hacer referencia a un Array hay que usar "formArrayName" y dentro de este div van todos los formControl con numeros -->
+        <div class="col-md-8" formArrayName="pasatiempos">
+            <input *ngFor="let pasatiempo of forma.controls['pasatiempos'].controls;let i = index" type="text" class="form-control" [formControlName]="i">
+        </div>
+        <button type="button" class="btn btn-primary" (click)="agregarPasatiempos()">Añadir Pasatiempo</button>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+            <button type="submit " class="btn btn-outline-primary">
+        Guardar
+      </button>
+        </div>
+    </div>
+
+    {{forma.valid}}
+    <br>
+    <!-- Este status es para ir comprobando la validacion asincrona -->
+    {{forma.status}}
+
+</form>
