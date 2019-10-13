@@ -1,0 +1,103 @@
+<h4>Formularios <small>template</small></h4>
+<hr>
+<!-- novalidate="" -> para que el navegador no utilice sus indicadores propios para los formularios
+(ngSubmit) cuando se haga submit al formulario se va a llamar a la funcion guardar()
+con "#" le damos un nombre unico a este form y lo igualamos a "ngForm", de esta forma podremos trabajar con los datos que devuelve este form desde Typescript -->
+<form (ngSubmit)="guardar(formu)" #formu="ngForm" novalidate="">
+
+    <div>
+
+        <div class="form-group row">
+            <!-- El "for" está relacionado con el "id" del input -->
+            <label class="col-2 col-form-label" for="validationServer01">Nombre</label>
+            <div class="col-8">
+                <!-- minlenght=longitud minima de letras para la palabra del formulario
+                required=que es obligatorio que tenga algo escrito
+                name=nombre que va a recibir este input del formulario para ser usado en typescript.Obligatorio siempre que se use ngModel
+                ngModel=enlace entre el TS y el HTML para este input
+                Con #inputNombre="ngForm" podremos controlar las propiedades (las que se imprimen por consola) de este input en el HTML -->
+                <!-- Con "[ngClass]" se puede determinar que el componente tenga una clase en concreto solo si se cumple una condicion
+                En este caso va a tener la clase is-invalid cuando required o minlength aparezcan como errores del componente -->
+                <input class="form-control" [ngClass]="{ 'is-invalid':inputNombre?.errors?.required || inputNombre?.errors?.minlength }" id="validationServer01" type="text" placeholder="Nombre" minlength="3" required name="nombre" [(ngModel)]="usuario.nombre" #inputNombre="ngModel">
+                <!-- En funcion del tipo de error que devuelva este componente se va a mostrar un mensaje u otro -->
+                <div class="invalid-feedback" *ngIf="inputNombre?.errors?.required">Este campo es obligatorio</div>
+                <div class="invalid-feedback" *ngIf="inputNombre?.errors?.minlength">El campo debe contener {{inputNombre?.errors.minlength.requiredLength}} caracteres por lo menos</div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" for="validationServer02">Apellido</label>
+            <div class="col-8">
+                <!-- Con [ngModel]="usuario.apellido" esta cogiendo el valor que tenga "apellido" en el typescript y lo muestra en el html
+                NOTA: el nombre de name="apellido" no es igual al de usuario.apellido, pueden llamarse distinto cada uno -->
+                <input class="form-control" [ngClass]="{ 'is-invalid':inputApellido?.errors?.required || inputApellido?.errors?.minlength }" id="validationServer02s" type="text" placeholder="Apellido" minlength="3" required name="apellido" [(ngModel)]="usuario.apellido"
+                    #inputApellido="ngModel">
+                <div class="invalid-feedback" *ngIf="inputApellido?.errors?.required">Este campo es obligatorio</div>
+                <div class="invalid-feedback" *ngIf="inputApellido?.errors?.minlength">El campo debe contener {{inputApellido?.errors.minlength.requiredLength}} caracteres por lo menos</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label" for="validationServer03">Correo</label>
+        <div class="col-md-8">
+            <!-- Con "pattern" se puede crear una autovalidacion de este input. Ese código se puede sacar de internet, este en concreto lo da el curso de Udemy -->
+            <input class="form-control" [ngClass]="{ 'is-invalid':inputCorreo?.errors?.required || inputCorreo?.errors?.minlength }" id="validationServer03" type="email" placeholder="Correo electrónico" minlength="5" required name="correo" [(ngModel)]="usuario.correo"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #inputCorreo="ngModel">
+            <div class="invalid-feedback" *ngIf="inputCorreo?.errors?.required">Este campo es obligatorio</div>
+            <div class="invalid-feedback" *ngIf="inputCorreo?.errors?.minlength">El campo debe contener {{inputCorreo?.errors.minlength.requiredLength}} caracteres por lo menos</div>
+            <div class="invalid-feedback" *ngIf="inputCorreo?.errors?.pattern">El correo introducido no es válido</div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">País</label>
+        <div class="col-md-8">
+            <select [(ngModel)]="usuario.pais" class="form-control" name="pais">
+                <option value="">Seleccione un país</option>
+                <option *ngFor="let pais of paises" [value]="pais.codigo">{{pais.nombre}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Sexo</label>
+        <div class="col-md-8">
+            <div class="custom-control custom-radio">
+                <input [(ngModel)]="usuario.sexo" type="radio" class="custom-control-input" id="customControlValidation1" value="Hombre" name="sexo" required>
+                <label class="custom-control-label" for="customControlValidation1">Hombre</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input [(ngModel)]="usuario.sexo" type="radio" class="custom-control-input" id="customControlValidation2" value="Mujer" name="sexo" required>
+                <label class="custom-control-label" for="customControlValidation2">Mujer</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Aceptar Condiciones</label>
+        <div class="col-md-8">
+            <div class="custom-control custom-checkbox">
+                <input name="acepta" [(ngModel)]="usuario.acepta" type="checkbox" class="custom-control-input" id="customCheck1" required>
+                <label class="custom-control-label" for="customCheck1">Acepta las condiciones</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+            <button type="submit" class="btn btn-outline-primary" [disabled]="!formu.valid">
+        Guardar
+      </button>
+        </div>
+    </div>
+
+</form>
+
+<!-- Lo siguiente muestra los datos del objeto en formato Json -->
+<pre>
+    {{usuario | json}}
+</pre>
